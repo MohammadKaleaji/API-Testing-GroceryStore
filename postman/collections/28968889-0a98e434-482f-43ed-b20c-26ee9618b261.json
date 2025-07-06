@@ -238,9 +238,8 @@
 					],
 					"variable": [
 						{
-							"id": "5deff41f-9bbc-4de5-b6d3-d6a395c2a11a",
 							"key": "productId",
-							"value": "4643"
+							"value": "{{firstProductId}}"
 						}
 					]
 				}
