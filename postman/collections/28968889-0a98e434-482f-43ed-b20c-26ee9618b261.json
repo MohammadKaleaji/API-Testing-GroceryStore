@@ -214,6 +214,24 @@
 		},
 		{
 			"name": "Get a Product",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d3eaec1a-5490-45af-9633-920e103125a0",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Body matches string\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"Starbucks Coffee Variety Pack, 100% Arabica\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"id": "28968889-49a2df39-5745-404e-9335-1c4f04460293",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
