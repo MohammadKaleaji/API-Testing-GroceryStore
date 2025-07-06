@@ -48,6 +48,53 @@
 			"response": []
 		},
 		{
+			"name": "Get Token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4b92797f-012c-4f6b-8c7d-9e50e38f231e",
+						"exec": [
+							"let jsonData = pm.response.json();\r",
+							"let token = jsonData.accessToken;\r",
+							"\r",
+							"pm.environment.set(\"authToken\", token);\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"id": "28968889-b64feb6f-526f-4aec-9ba2-42b9385b94f2",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \"clientName\": \"Kaleaji\",\n   \"clientEmail\": \"mohamamdkaleaji@yopmail.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseURL}}/api-clients",
+					"host": [
+						"{{BaseURL}}"
+					],
+					"path": [
+						"api-clients"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Get All Products",
 			"event": [
 				{
@@ -257,53 +304,6 @@
 							"key": "cartId",
 							"value": "aUtBrR3eVPM8QBZdYMJqT"
 						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Get Token",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"id": "4b92797f-012c-4f6b-8c7d-9e50e38f231e",
-						"exec": [
-							"let jsonData = pm.response.json();\r",
-							"let token = jsonData.accessToken;\r",
-							"\r",
-							"pm.environment.set(\"authToken\", token);\r",
-							""
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"id": "28968889-b64feb6f-526f-4aec-9ba2-42b9385b94f2",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n   \"clientName\": \"Kaleaji\",\n   \"clientEmail\": \"mohamamdkaleaji@yopmail.com\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{BaseURL}}/api-clients",
-					"host": [
-						"{{BaseURL}}"
-					],
-					"path": [
-						"api-clients"
 					]
 				}
 			},
