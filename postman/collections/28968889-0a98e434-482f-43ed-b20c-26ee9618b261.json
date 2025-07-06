@@ -1,0 +1,370 @@
+{
+	"info": {
+		"_postman_id": "28968889-0a98e434-482f-43ed-b20c-26ee9618b261",
+		"name": "Grocery Store API Copy",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Status",
+			"id": "28968889-774964c0-5888-4a0a-82b4-7b30afde07f4",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BaseURL}}/status",
+					"host": [
+						"{{BaseURL}}"
+					],
+					"path": [
+						"status"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Products",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "02291a61-28ef-4454-afa9-654029ff7f0f",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Body matches string\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"coffee\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"id": "28968889-88d9090b-37da-4427-91e1-1b47c5e13d50",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BaseURL}}/products",
+					"host": [
+						"{{BaseURL}}"
+					],
+					"path": [
+						"products"
+					],
+					"query": [
+						{
+							"key": "available",
+							"value": "true",
+							"disabled": true
+						},
+						{
+							"key": "results",
+							"value": "20",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get a Product",
+			"id": "28968889-49a2df39-5745-404e-9335-1c4f04460293",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BaseURL}}/products/:productId?product-label=true",
+					"host": [
+						"{{BaseURL}}"
+					],
+					"path": [
+						"products",
+						":productId"
+					],
+					"query": [
+						{
+							"key": "product-label",
+							"value": "true"
+						}
+					],
+					"variable": [
+						{
+							"id": "5deff41f-9bbc-4de5-b6d3-d6a395c2a11a",
+							"key": "productId",
+							"value": "4643"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create a New Cart",
+			"id": "28968889-517bea3f-4763-42bc-b273-03ea862b2ada",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{BaseURL}}/carts",
+					"host": [
+						"{{BaseURL}}"
+					],
+					"path": [
+						"carts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get a Cart",
+			"id": "28968889-f0bdfc87-7c38-4bff-b133-e224ca2b2c3a",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BaseURL}}/carts/:cartId",
+					"host": [
+						"{{BaseURL}}"
+					],
+					"path": [
+						"carts",
+						":cartId"
+					],
+					"variable": [
+						{
+							"id": "29798ebc-5fc3-4074-a78a-603b69b43d47",
+							"key": "cartId",
+							"value": "aUtBrR3eVPM8QBZdYMJqT"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Cart Items",
+			"id": "28968889-e732e56d-3bbd-4868-be33-162af83c9e82",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BaseURL}}/carts/:cartId/items",
+					"host": [
+						"{{BaseURL}}"
+					],
+					"path": [
+						"carts",
+						":cartId",
+						"items"
+					],
+					"variable": [
+						{
+							"id": "bcd0426a-f67f-4643-9ae4-184aa1857d5b",
+							"key": "cartId",
+							"value": "aUtBrR3eVPM8QBZdYMJqT"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Items to Cart",
+			"id": "28968889-5449086d-fe73-41e1-8935-fc3b4bfd2ffc",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"productId\": 4643,\n    \"quantity\": 2\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseURL}}/carts/:cartId/items",
+					"host": [
+						"{{BaseURL}}"
+					],
+					"path": [
+						"carts",
+						":cartId",
+						"items"
+					],
+					"variable": [
+						{
+							"id": "9f2cfbbb-808b-49c2-9751-b9c87060c2d1",
+							"key": "cartId",
+							"value": "aUtBrR3eVPM8QBZdYMJqT"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4b92797f-012c-4f6b-8c7d-9e50e38f231e",
+						"exec": [
+							"let jsonData = pm.response.json();\r",
+							"let token = jsonData.accessToken;\r",
+							"\r",
+							"pm.environment.set(\"authToken\", token);\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"id": "28968889-b64feb6f-526f-4aec-9ba2-42b9385b94f2",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \"clientName\": \"Kaleaji\",\n   \"clientEmail\": \"mohamamdkaleaji@yopmail.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseURL}}/api-clients",
+					"host": [
+						"{{BaseURL}}"
+					],
+					"path": [
+						"api-clients"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create a New Order",
+			"id": "28968889-4f0660ec-88a1-4441-a34e-112602d3e089",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"cartId\" : \"aUtBrR3eVPM8QBZdYMJqT\",\n    \"customerName\": \"Mohammad Kaleaji\"\n\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseURL}}/orders",
+					"host": [
+						"{{BaseURL}}"
+					],
+					"path": [
+						"orders"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "ad4e3e18-3c14-4243-8236-45b90a0a1599",
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "5e695543-dade-4273-8b54-b037d42fa86a",
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "accessToken",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
