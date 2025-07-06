@@ -64,6 +64,33 @@
 						"type": "text/javascript",
 						"packages": {}
 					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "41d795b3-2e66-4dd8-8748-dd061aae6e71",
+						"exec": [
+							"// Generate a random string",
+							"function getRandomString(length) {",
+							"    const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';",
+							"    let result = '';",
+							"    for (let i = 0; i < length; i++) {",
+							"        result += chars[Math.floor(Math.random() * chars.length)];",
+							"    }",
+							"    return result;",
+							"}",
+							"",
+							"let randomName = \"test_\" + getRandomString(6);",
+							"let randomEmail = randomName + \"@yopmail.com\";",
+							"",
+							"// Save to environment or global variables",
+							"pm.environment.set(\"clientName\", randomName);",
+							"pm.environment.set(\"clientEmail\", randomEmail);",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
 				}
 			],
 			"id": "28968889-b64feb6f-526f-4aec-9ba2-42b9385b94f2",
@@ -75,7 +102,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n   \"clientName\": \"Kaleaji\",\n   \"clientEmail\": \"mohamamdkaleaji@yopmail.com\"\n}",
+					"raw": "{\n   \"clientName\": \"{{clientName}}\",\n   \"clientEmail\": \"{{clientEmail}}\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
