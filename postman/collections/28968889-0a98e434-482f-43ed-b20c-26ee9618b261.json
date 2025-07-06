@@ -129,15 +129,30 @@
 					"script": {
 						"id": "02291a61-28ef-4454-afa9-654029ff7f0f",
 						"exec": [
+							"// 1. Status code check",
 							"pm.test(\"Status code is 200\", function () {",
 							"    pm.response.to.have.status(200);",
 							"});",
+							"",
+							"// 2. Response contains 'coffee'",
 							"pm.test(\"Body matches string\", function () {",
 							"    pm.expect(pm.response.text()).to.include(\"coffee\");",
 							"});",
+							"",
+							"// 3. Response time",
 							"pm.test(\"Response time is less than 1000ms\", function () {",
 							"    pm.expect(pm.response.responseTime).to.be.below(1000);",
 							"});",
+							"",
+							"// 4. Save first product's id",
+							"let responseData = pm.response.json();",
+							"if (Array.isArray(responseData) && responseData.length > 0) {",
+							"    let firstProductId = responseData[0].id;",
+							"    pm.environment.set(\"firstProductId\", firstProductId);",
+							"    console.log(\"Saved first product id:\", firstProductId);",
+							"} else {",
+							"    console.warn(\"Response is not a valid array or it's empty.\");",
+							"}",
 							""
 						],
 						"type": "text/javascript",
@@ -147,8 +162,12 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"packages": {},
-						"type": "text/javascript"
+						"id": "dadaee15-b84a-4bed-86e4-4a88c48e2a12",
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
