@@ -13,11 +13,15 @@
 					"script": {
 						"id": "a54dab4b-4287-489d-85df-dbfa4589d069",
 						"exec": [
+							"var jsonData = pm.response.json();",
+							"",
 							"pm.test(\"Status code is 200\", function () {",
 							"    pm.response.to.have.status(200);",
 							"});",
 							"",
-							""
+							"pm.test(\"Status is UP\", function () {",
+							"    pm.expect(jsonData.status).to.eql(\"UP\");",
+							"});"
 						],
 						"type": "text/javascript",
 						"packages": {}
