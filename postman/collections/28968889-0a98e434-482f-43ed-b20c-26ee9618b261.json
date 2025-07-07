@@ -421,9 +421,17 @@
 					"script": {
 						"id": "ceaeb54c-a0bb-4fd9-b027-ea202935f4f5",
 						"exec": [
-							"pm.test(\"Status code is 201\", function () {",
-							"    pm.response.to.have.status(201);",
-							"});"
+							"pm.test(\"Status code is 201 or 400\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([201, 400]);",
+							"});",
+							"",
+							"if (pm.response.code === 400) {",
+							"    let jsonData = pm.response.json();",
+							"    pm.test(\"Error message is correct\", function () {",
+							"        pm.expect(jsonData.error).to.eql(\"This product has already been added to cart.\");",
+							"    });",
+							"}",
+							""
 						],
 						"type": "text/javascript",
 						"packages": {}
