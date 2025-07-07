@@ -279,10 +279,23 @@
 							"    var jsonData = pm.response.json();",
 							"    pm.expect(jsonData.created).to.be.true;",
 							"});",
-							""
+							"let jsonData = pm.response.json();",
+							"if (jsonData.cartId) {",
+							"    pm.environment.set(\"CartId\", jsonData.cartId);",
+							"    console.log(\"Saved CartId:\", jsonData.cartId);",
+							"} else {",
+							"    console.warn(\"cartId not found in the response.\");",
+							"}"
 						],
 						"type": "text/javascript",
 						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"packages": {},
+						"type": "text/javascript"
 					}
 				}
 			],
@@ -307,6 +320,25 @@
 		},
 		{
 			"name": "Get a Cart",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "32ca350c-8ca0-4f8d-a192-158c076bc2f5",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Response contains 'items' as an array\", function () {",
+							"    let jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property(\"items\").that.is.an(\"array\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"id": "28968889-f0bdfc87-7c38-4bff-b133-e224ca2b2c3a",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
@@ -325,9 +357,8 @@
 					],
 					"variable": [
 						{
-							"id": "29798ebc-5fc3-4074-a78a-603b69b43d47",
 							"key": "cartId",
-							"value": "aUtBrR3eVPM8QBZdYMJqT"
+							"value": "{{CartId}}"
 						}
 					]
 				}
