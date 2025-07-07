@@ -415,6 +415,21 @@
 		},
 		{
 			"name": "Add Items to Cart",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ceaeb54c-a0bb-4fd9-b027-ea202935f4f5",
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"id": "28968889-5449086d-fe73-41e1-8935-fc3b4bfd2ffc",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
