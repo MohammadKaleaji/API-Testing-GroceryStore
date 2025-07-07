@@ -476,6 +476,42 @@
 		},
 		{
 			"name": "Create a New Order",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "1e30e91b-4216-4a75-b09c-b8ef87c80f2c",
+						"exec": [
+							"let jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Status code is 201 or 400\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([201, 400]);",
+							"});",
+							"",
+							"if (pm.response.code === 201) {",
+							"    pm.test(\"'created' is true\", function () {",
+							"        pm.expect(jsonData.created).to.be.true;",
+							"    });",
+							"",
+							"    pm.test(\"'orderId' is a non-empty string\", function () {",
+							"        pm.expect(jsonData.orderId).to.be.a(\"string\").and.not.empty;",
+							"    });",
+							"",
+							"    // Optional: Save orderId",
+							"    pm.environment.set(\"orderId\", jsonData.orderId);",
+							"",
+							"} else if (pm.response.code === 400) {",
+							"    pm.test(\"Error message is about missing cartId\", function () {",
+							"        pm.expect(jsonData.error).to.eql(\"Invalid or missing cartId.\");",
+							"    });",
+							"}",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"id": "28968889-4f0660ec-88a1-4441-a34e-112602d3e089",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
@@ -486,7 +522,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "{{accessToken}}",
+							"value": "{{authToken}}",
 							"type": "string"
 						}
 					]
@@ -502,7 +538,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"cartId\" : \"aUtBrR3eVPM8QBZdYMJqT\",\n    \"customerName\": \"Mohammad Kaleaji\"\n\n}",
+					"raw": "{\n    \"cartId\" : \"{{CartId}}\",\n    \"customerName\": \"Mohammad Kaleaji\"\n\n}",
 					"options": {
 						"raw": {
 							"language": "json"
