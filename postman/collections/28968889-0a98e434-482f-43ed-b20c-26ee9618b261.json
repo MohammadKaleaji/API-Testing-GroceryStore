@@ -279,10 +279,23 @@
 							"    var jsonData = pm.response.json();",
 							"    pm.expect(jsonData.created).to.be.true;",
 							"});",
-							""
+							"let jsonData = pm.response.json();",
+							"if (jsonData.cartId) {",
+							"    pm.environment.set(\"CartId\", jsonData.cartId);",
+							"    console.log(\"Saved CartId:\", jsonData.cartId);",
+							"} else {",
+							"    console.warn(\"cartId not found in the response.\");",
+							"}"
 						],
 						"type": "text/javascript",
 						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"packages": {},
+						"type": "text/javascript"
 					}
 				}
 			],
@@ -307,6 +320,25 @@
 		},
 		{
 			"name": "Get a Cart",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "32ca350c-8ca0-4f8d-a192-158c076bc2f5",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Response contains 'items' as an array\", function () {",
+							"    let jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property(\"items\").that.is.an(\"array\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"id": "28968889-f0bdfc87-7c38-4bff-b133-e224ca2b2c3a",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
@@ -325,9 +357,8 @@
 					],
 					"variable": [
 						{
-							"id": "29798ebc-5fc3-4074-a78a-603b69b43d47",
 							"key": "cartId",
-							"value": "aUtBrR3eVPM8QBZdYMJqT"
+							"value": "{{CartId}}"
 						}
 					]
 				}
@@ -336,6 +367,25 @@
 		},
 		{
 			"name": "Get Cart Items",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "651eb8c2-a717-4444-8db4-bafbc8b72fdf",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Response is an array\", function () {",
+							"    let jsonData = pm.response.json();",
+							"    pm.expect(Array.isArray(jsonData)).to.be.true;",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"id": "28968889-e732e56d-3bbd-4868-be33-162af83c9e82",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
@@ -355,9 +405,8 @@
 					],
 					"variable": [
 						{
-							"id": "bcd0426a-f67f-4643-9ae4-184aa1857d5b",
 							"key": "cartId",
-							"value": "aUtBrR3eVPM8QBZdYMJqT"
+							"value": "{{CartId}}"
 						}
 					]
 				}
@@ -366,6 +415,29 @@
 		},
 		{
 			"name": "Add Items to Cart",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ceaeb54c-a0bb-4fd9-b027-ea202935f4f5",
+						"exec": [
+							"pm.test(\"Status code is 201 or 400\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([201, 400]);",
+							"});",
+							"",
+							"if (pm.response.code === 400) {",
+							"    let jsonData = pm.response.json();",
+							"    pm.test(\"Error message is correct\", function () {",
+							"        pm.expect(jsonData.error).to.eql(\"This product has already been added to cart.\");",
+							"    });",
+							"}",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"id": "28968889-5449086d-fe73-41e1-8935-fc3b4bfd2ffc",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
@@ -394,9 +466,8 @@
 					],
 					"variable": [
 						{
-							"id": "9f2cfbbb-808b-49c2-9751-b9c87060c2d1",
 							"key": "cartId",
-							"value": "aUtBrR3eVPM8QBZdYMJqT"
+							"value": "{{CartId}}"
 						}
 					]
 				}
@@ -405,6 +476,42 @@
 		},
 		{
 			"name": "Create a New Order",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "1e30e91b-4216-4a75-b09c-b8ef87c80f2c",
+						"exec": [
+							"let jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Status code is 201 or 400\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([201, 400]);",
+							"});",
+							"",
+							"if (pm.response.code === 201) {",
+							"    pm.test(\"'created' is true\", function () {",
+							"        pm.expect(jsonData.created).to.be.true;",
+							"    });",
+							"",
+							"    pm.test(\"'orderId' is a non-empty string\", function () {",
+							"        pm.expect(jsonData.orderId).to.be.a(\"string\").and.not.empty;",
+							"    });",
+							"",
+							"    // Optional: Save orderId",
+							"    pm.environment.set(\"orderId\", jsonData.orderId);",
+							"",
+							"} else if (pm.response.code === 400) {",
+							"    pm.test(\"Error message is about missing cartId\", function () {",
+							"        pm.expect(jsonData.error).to.eql(\"Invalid or missing cartId.\");",
+							"    });",
+							"}",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"id": "28968889-4f0660ec-88a1-4441-a34e-112602d3e089",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
@@ -415,7 +522,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "{{accessToken}}",
+							"value": "{{authToken}}",
 							"type": "string"
 						}
 					]
@@ -431,7 +538,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"cartId\" : \"aUtBrR3eVPM8QBZdYMJqT\",\n    \"customerName\": \"Mohammad Kaleaji\"\n\n}",
+					"raw": "{\n    \"cartId\" : \"{{CartId}}\",\n    \"customerName\": \"Mohammad Kaleaji\"\n\n}",
 					"options": {
 						"raw": {
 							"language": "json"
