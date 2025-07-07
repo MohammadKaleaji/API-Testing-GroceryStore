@@ -443,9 +443,8 @@
 					],
 					"variable": [
 						{
-							"id": "9f2cfbbb-808b-49c2-9751-b9c87060c2d1",
 							"key": "cartId",
-							"value": "aUtBrR3eVPM8QBZdYMJqT"
+							"value": "{{CartId}}"
 						}
 					]
 				}
